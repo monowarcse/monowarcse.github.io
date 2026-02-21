@@ -1,0 +1,500 @@
+<!-- blog.html -->
+<!DOCTYPE HTML>
+<html>
+<head>
+    <title>Blog - Monowar Portfolio</title>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no" />
+    <meta name="description" content="ML and AI blog articles by Monowar Islam." />
+    <link rel="stylesheet" href="assets/css/main.css" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" />
+    <style>
+        :root {
+            --accent: #e74c3c;
+            --accent2: #f39c12;
+            --glow: rgba(231,76,60,0.15);
+        }
+
+        html { scroll-behavior: smooth; }
+
+        /* Page fade in */
+        #wrapper { animation: fadeInPage 0.8s ease forwards; }
+        @keyframes fadeInPage {
+            from { opacity:0; transform:translateY(12px); }
+            to   { opacity:1; transform:translateY(0); }
+        }
+
+        /* Scroll progress bar */
+        #scroll-progress {
+            position: fixed; top:0; left:0;
+            height: 3px; width: 0%;
+            background: linear-gradient(90deg, var(--accent), var(--accent2));
+            z-index: 99999;
+            transition: width 0.1s linear;
+        }
+
+        /* Header */
+        #header .logo strong { transition: color 0.3s; }
+        #header .logo:hover strong { color: var(--accent); }
+        #header .icons li a {
+            transition: transform 0.25s cubic-bezier(.34,1.56,.64,1), color 0.25s;
+        }
+        #header .icons li a:hover {
+            transform: translateY(-5px) scale(1.2);
+            color: var(--accent) !important;
+        }
+
+        /* Section heading underline */
+        .major h2 {
+            position: relative;
+            display: inline-block;
+        }
+        .major h2::after {
+            content: '';
+            position: absolute;
+            left: 0; bottom: -4px;
+            width: 0; height: 2px;
+            background: var(--accent);
+            transition: width 0.5s ease;
+        }
+        section:hover .major h2::after { width: 100%; }
+
+        /* Blog cards */
+        .posts article {
+            border-radius: 8px;
+            overflow: hidden;
+            opacity: 0;
+            transform: translateY(30px);
+            transition: opacity 0.5s ease, transform 0.5s ease,
+                        box-shadow 0.3s ease;
+            position: relative;
+        }
+        .posts article.visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+        .posts article:hover {
+            transform: translateY(-6px);
+            box-shadow: 0 12px 32px var(--glow);
+        }
+        .posts article .image img {
+            transition: transform 0.4s ease;
+        }
+        .posts article:hover .image img {
+            transform: scale(1.05);
+        }
+
+        /* Blog tags */
+        .blog-tags {
+            display: flex; flex-wrap: wrap; gap: 6px;
+            margin: 6px 0 10px;
+        }
+        .blog-tag {
+            background: rgba(231,76,60,0.08);
+            color: var(--accent);
+            border: 1px solid rgba(231,76,60,0.25);
+            padding: 2px 10px;
+            border-radius: 20px;
+            font-size: 0.74em;
+            font-weight: 600;
+            letter-spacing: 0.3px;
+        }
+
+        /* Date badge */
+        .post-date {
+            font-size: 0.78em;
+            color: #999;
+            margin-top: 8px;
+            display: flex;
+            align-items: center;
+            gap: 5px;
+        }
+        .post-date i { color: var(--accent); }
+
+        /* Search */
+        #blog-search {
+            width: 100%;
+            padding: 12px 16px;
+            border: 1.5px solid #ddd;
+            border-radius: 8px;
+            font-size: 1em;
+            margin-bottom: 28px;
+            transition: border-color 0.3s, box-shadow 0.3s;
+        }
+        #blog-search:focus {
+            border-color: var(--accent);
+            box-shadow: 0 0 0 3px rgba(231,76,60,0.12);
+            outline: none;
+        }
+
+        /* No results message */
+        #no-results {
+            display: none;
+            text-align: center;
+            padding: 40px;
+            color: #999;
+            font-size: 1.1em;
+        }
+
+        /* Buttons */
+        .button.primary, input[type="submit"].primary {
+            transition: transform 0.2s, box-shadow 0.3s;
+        }
+        .button.primary:hover, input[type="submit"].primary:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(231,76,60,0.4);
+        }
+        .button:not(.primary):hover {
+            border-color: var(--accent);
+            color: var(--accent);
+        }
+
+        /* Form */
+        input[type="text"]:focus, input[type="email"]:focus, textarea:focus {
+            border-color: var(--accent) !important;
+            box-shadow: 0 0 0 3px rgba(231,76,60,0.12) !important;
+            outline: none;
+        }
+
+        /* Pagination buttons */
+        ul.pagination { margin-top: 20px; }
+        ul.pagination .button {
+            transition: transform 0.2s, box-shadow 0.2s;
+        }
+        ul.pagination .button:not(.disabled):hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 16px var(--glow);
+        }
+
+        /* Nav hover */
+        #menu nav ul li a { transition: color 0.3s, padding-left 0.3s; }
+        #menu nav ul li a:hover {
+            padding-left: 8px;
+            color: var(--accent) !important;
+        }
+
+        /* Sidebar mini-posts */
+        .mini-posts article a.image img { transition: transform 0.3s ease; }
+        .mini-posts article:hover a.image img { transform: scale(1.04); }
+
+        /* Sidebar search */
+        #search.alt input {
+            transition: border-color 0.3s, box-shadow 0.3s;
+        }
+        #search.alt input:focus {
+            border-color: var(--accent) !important;
+            box-shadow: 0 0 0 3px rgba(231,76,60,0.12) !important;
+            outline: none;
+        }
+
+        /* WhatsApp */
+        .whatsapp-float {
+            position: fixed;
+            bottom: 25px; right: 25px;
+            width: 60px; height: 60px;
+            background: #25D366; color: white;
+            border-radius: 50%;
+            display: flex; align-items: center; justify-content: center;
+            font-size: 26px; z-index: 9999;
+            text-decoration: none;
+            animation: waPulse 2.5s ease-in-out infinite;
+        }
+        @keyframes waPulse {
+            0%,100% { box-shadow: 0 6px 18px rgba(37,211,102,0.4), 0 0 0 0 rgba(37,211,102,0.3); }
+            50%      { box-shadow: 0 6px 24px rgba(37,211,102,0.6), 0 0 0 12px rgba(37,211,102,0); }
+        }
+        .wa-tooltip {
+            position: absolute; right: 70px;
+            background: #333; color: white;
+            padding: 6px 12px; border-radius: 5px;
+            font-size: 13px; opacity: 0;
+            transition: 0.3s; white-space: nowrap;
+        }
+        .whatsapp-float:hover .wa-tooltip { opacity: 1; }
+
+        /* Custom scrollbar */
+        ::-webkit-scrollbar { width: 8px; }
+        ::-webkit-scrollbar-track { background: #f1f1f1; }
+        ::-webkit-scrollbar-thumb {
+            background: linear-gradient(45deg, var(--accent), var(--accent2));
+            border-radius: 5px;
+        }
+    </style>
+</head>
+<body class="is-preload">
+
+    <div id="scroll-progress"></div>
+
+    <div id="wrapper">
+        <div id="main">
+            <div class="inner">
+
+                <!-- Header -->
+                <header id="header">
+                    <a href="index.html" class="logo"><strong>Monowar</strong> Portfolio</a>
+                    <ul class="icons">
+                        <li><a href="mailto:monowar.1002@fec.edu.bd" class="icon solid fa-envelope"><span class="label">Email</span></a></li>
+                        <li><a href="https://www.linkedin.com/in/monowarcse/" class="icon brands fa-linkedin"><span class="label">LinkedIn</span></a></li>
+                        <li><a href="https://github.com/dewshishir" class="icon brands fa-github"><span class="label">GitHub</span></a></li>
+                        <li><a href="https://www.kaggle.com/monowarislamshishir" class="icon brands fa-kaggle"><span class="label">Kaggle</span></a></li>
+                        <li><a href="https://medium.com/@monowarcse" class="icon brands fa-medium-m"><span class="label">Medium</span></a></li>
+                        <li><a href="https://x.com/haiShishir" class="icon brands fa-twitter"><span class="label">Twitter</span></a></li>
+                        <li><a href="https://www.facebook.com/monowarcse" class="icon brands fa-facebook-f"><span class="label">Facebook</span></a></li>
+                        <li><a href="https://www.instagram.com/haishishir" class="icon brands fa-instagram"><span class="label">Instagram</span></a></li>
+                    </ul>
+                </header>
+
+                <section style="margin-top: -60px;">
+                    <header class="major" style="text-align:center;">
+                        <h1 style="font-size:2.2em;">Blogs</h1>
+                    </header>
+
+                    <!-- Live search bar -->
+                    <input type="text" id="blog-search" placeholder="🔍  Search blog posts by title or topic..." />
+
+                    <!-- No results -->
+                    <div id="no-results">No posts found matching your search.</div>
+
+                    <!-- Blog Posts -->
+                    <div class="posts" id="blog-posts">
+
+                        <article data-tags="machine learning algorithms supervised unsupervised ensemble">
+                            <a href="https://medium.com/@monowarcse/machine-learning-algorithms-a-comprehensive-explanation-3afef49b894a" class="image" target="_blank">
+                                <img src="images/ML_Algorithms.jpg" alt="Machine Learning Algorithms" />
+                            </a>
+                            <h3>Machine Learning Algorithms: A Comprehensive Explanation</h3>
+                            <div class="blog-tags">
+                                <span class="blog-tag">Machine Learning</span>
+                                <span class="blog-tag">Supervised</span>
+                                <span class="blog-tag">Ensemble</span>
+                            </div>
+                            <p>A structured breakdown of core ML algorithms including supervised, unsupervised, and ensemble methods with practical intuition and real-world examples.</p>
+                            <ul class="actions">
+                                <li><a href="https://medium.com/@monowarcse/machine-learning-algorithms-a-comprehensive-explanation-3afef49b894a" class="button" target="_blank">Read More</a></li>
+                            </ul>
+                            <p class="post-date"><i class="fas fa-calendar-alt"></i> Oct 28, 2025</p>
+                        </article>
+
+                        <article data-tags="cnn convolutional neural network computer vision deep learning image">
+                            <a href="https://medium.com/@monowarcse/cnns-made-simple-how-computers-learn-to-see-like-humans-56af12818197" class="image" target="_blank">
+                                <img src="images/cnn.jpg" alt="CNNs Made Simple" />
+                            </a>
+                            <h3>CNNs Made Simple: How Computers Learn to See Like Humans</h3>
+                            <div class="blog-tags">
+                                <span class="blog-tag">CNN</span>
+                                <span class="blog-tag">Deep Learning</span>
+                                <span class="blog-tag">Computer Vision</span>
+                            </div>
+                            <p>An intuitive explanation of convolutional neural networks, feature extraction, pooling layers, and how deep vision models interpret visual data.</p>
+                            <ul class="actions">
+                                <li><a href="https://medium.com/@monowarcse/cnns-made-simple-how-computers-learn-to-see-like-humans-56af12818197" class="button" target="_blank">Read More</a></li>
+                            </ul>
+                            <p class="post-date"><i class="fas fa-calendar-alt"></i> Oct 25, 2025</p>
+                        </article>
+
+                        <article data-tags="logistic regression classification sigmoid binary prediction">
+                            <a href="https://medium.com/@monowarcse/logistic-regression-the-friendly-guide-to-yes-no-predictions-3e0666980358" class="image" target="_blank">
+                                <img src="images/Logistic Regression.jpg" alt="Logistic Regression Guide" />
+                            </a>
+                            <h3>Logistic Regression: The Friendly Guide to Yes/No Predictions</h3>
+                            <div class="blog-tags">
+                                <span class="blog-tag">Logistic Regression</span>
+                                <span class="blog-tag">Classification</span>
+                                <span class="blog-tag">ML</span>
+                            </div>
+                            <p>A practical and mathematical explanation of logistic regression, sigmoid functions, decision boundaries, and classification intuition.</p>
+                            <ul class="actions">
+                                <li><a href="https://medium.com/@monowarcse/logistic-regression-the-friendly-guide-to-yes-no-predictions-3e0666980358" class="button" target="_blank">Read More</a></li>
+                            </ul>
+                            <p class="post-date"><i class="fas fa-calendar-alt"></i> Oct 24, 2025</p>
+                        </article>
+
+                        <article data-tags="computer vision pixels image ai recognition detection">
+                            <a href="https://medium.com/@monowarcse/computer-vision-in-the-wild-from-pixels-to-practical-magic-7a5e9bc0bea2" class="image" target="_blank">
+                                <img src="images/Computer_Vision.jpg" alt="Computer Vision in the Wild" />
+                            </a>
+                            <h3>Computer Vision in the Wild: From Pixels to Practical Magic</h3>
+                            <div class="blog-tags">
+                                <span class="blog-tag">Computer Vision</span>
+                                <span class="blog-tag">AI</span>
+                                <span class="blog-tag">Real-World</span>
+                            </div>
+                            <p>Understanding how computer vision systems process images, extract features, and power real-world AI applications across industries.</p>
+                            <ul class="actions">
+                                <li><a href="https://medium.com/@monowarcse/computer-vision-in-the-wild-from-pixels-to-practical-magic-7a5e9bc0bea2" class="button" target="_blank">Read More</a></li>
+                            </ul>
+                            <p class="post-date"><i class="fas fa-calendar-alt"></i> Oct 23, 2025</p>
+                        </article>
+
+                    </div>
+
+                    <!-- Pagination -->
+                    <ul class="actions pagination">
+                        <li><a href="#" class="disabled button large previous">Previous</a></li>
+                        <li><a href="https://medium.com/@monowarcse" class="button large next" target="_blank">More on Medium</a></li>
+                    </ul>
+
+                    <hr class="major" />
+
+                    <!-- Contact Form — FIX: replaced placeholder redirect -->
+                    <form method="POST" action="https://formspree.io/f/mpqjjevd">
+                        <input type="hidden" name="_subject" value="New Message from Monowar Portfolio" />
+                        <input type="hidden" name="_redirect" value="https://dewshishir.github.io/thankyou.html" />
+                        <input type="text" name="_gotcha" style="display:none" />
+                        <div class="row gtr-uniform">
+                            <div class="col-6 col-12-xsmall">
+                                <input type="text" name="name" placeholder="Name" required />
+                            </div>
+                            <div class="col-6 col-12-xsmall">
+                                <input type="email" name="email" placeholder="Email" required />
+                            </div>
+                            <div class="col-12">
+                                <input type="text" name="subject" placeholder="Subject" required />
+                            </div>
+                            <div class="col-12">
+                                <textarea name="message" placeholder="Message" rows="6" required></textarea>
+                            </div>
+                            <div class="col-12">
+                                <ul class="actions">
+                                    <li><input type="submit" value="Send Message" class="primary" /></li>
+                                    <li><input type="reset" value="Reset" /></li>
+                                </ul>
+                            </div>
+                        </div>
+                    </form>
+
+                </section>
+            </div>
+        </div>
+
+        <!-- Sidebar -->
+        <div id="sidebar">
+            <div class="inner">
+
+                <!-- FIX: sidebar search wired to same filter function -->
+                <section id="search" class="alt">
+                    <form method="post" action="#">
+                        <input type="text" id="sidebarSearch" placeholder="Search Blog" />
+                    </form>
+                </section>
+
+                <nav id="menu">
+                    <header class="major"><h2>Menu</h2></header>
+                    <ul>
+                        <li><a href="index.html">Home</a></li>
+                        <li><a href="myresume.html">My Resume</a></li>
+                        <li><a href="projects.html">Projects</a></li>
+                        <li><a href="blog.html">Blog</a></li>
+                        <li><a href="contact.html">Contact</a></li>
+                    </ul>
+                </nav>
+
+                <!-- FIX: broken href="#" on certificate links — point to index.html#certificates -->
+                <section>
+                    <header class="major"><h2>Recent Certificates</h2></header>
+                    <div class="mini-posts">
+                        <article>
+                            <a href="https://www.coursera.org/account/accomplishments/verify/7BLE3KF4RXZO" class="image" target="_blank">
+                                <img src="images/Coursera 7BLE3KF4RXZO.png" alt="Machine Learning Certificate" />
+                            </a>
+                            <p>Machine Learning – Regression & Classification</p>
+                        </article>
+                        <article>
+                            <a href="https://www.credly.com/badges/2d207bb9-0daf-4ead-a9e6-166ff694bf96.pdf" class="image" target="_blank">
+                                <img src="images/cisco data science.png" alt="Cisco Data Science Certificate" />
+                            </a>
+                            <p>Cisco Introduction to Data Science</p>
+                        </article>
+                        <article>
+                            <a href="https://www.udemy.com/certificate/UC-37cccca7-4e1b-4c5c-8e90-a699dcc78438/" class="image" target="_blank">
+                                <img src="images/udemy django.png" alt="Django Masterclass Certificate" />
+                            </a>
+                            <p>Django Web Development Masterclass</p>
+                        </article>
+                    </div>
+                    <ul class="actions">
+                        <!-- FIX: certificates.html doesn't exist — links to index.html -->
+                        <li><a href="index.html" class="button">View All Certificates</a></li>
+                    </ul>
+                </section>
+
+                <section>
+                    <header class="major"><h2>Connect With Me</h2></header>
+                    <ul class="contact">
+                        <li class="icon solid fa-envelope"><a href="mailto:monowar.1002@fec.edu.bd">monowar.1002@fec.edu.bd</a></li>
+                        <li class="icon brands fa-linkedin"><a href="https://www.linkedin.com/in/monowarcse/">LinkedIn</a></li>
+                        <li class="icon brands fa-github"><a href="https://github.com/dewshishir">GitHub</a></li>
+                        <li class="icon brands fa-kaggle"><a href="https://www.kaggle.com/monowarislamshishir">Kaggle</a></li>
+                        <li class="icon brands fa-medium-m"><a href="https://medium.com/@monowarcse">Medium</a></li>
+                    </ul>
+                </section>
+
+                <footer id="footer">
+                    <p class="copyright">&copy; Monowar 2025. Design: <a href="https://html5up.net">HTML5 UP</a>.</p>
+                </footer>
+            </div>
+        </div>
+    </div>
+
+    <!-- WhatsApp -->
+    <a href="https://wa.me/8801679787608?text=Hello%20I%20want%20to%20know%20more"
+       class="whatsapp-float" target="_blank">
+        <span class="wa-tooltip">Live Chat</span>
+        <i class="fab fa-whatsapp"></i>
+    </a>
+
+    <script src="assets/js/jquery.min.js"></script>
+    <script src="assets/js/browser.min.js"></script>
+    <script src="assets/js/breakpoints.min.js"></script>
+    <script src="assets/js/util.js"></script>
+    <script src="assets/js/main.js"></script>
+
+    <script>
+        // Scroll progress
+        window.addEventListener('scroll', () => {
+            const pct = window.scrollY / (document.documentElement.scrollHeight - window.innerHeight) * 100;
+            document.getElementById('scroll-progress').style.width = pct + '%';
+        });
+
+        // Blog cards scroll-trigger stagger
+        const cardObs = new IntersectionObserver((entries) => {
+            entries.forEach((entry, i) => {
+                if (entry.isIntersecting) {
+                    const idx = [...document.querySelectorAll('#blog-posts article')].indexOf(entry.target);
+                    setTimeout(() => entry.target.classList.add('visible'), idx * 130);
+                    cardObs.unobserve(entry.target);
+                }
+            });
+        }, { threshold: 0.1 });
+        document.querySelectorAll('#blog-posts article').forEach(el => cardObs.observe(el));
+
+        // Live search — filters by title text + data-tags
+        function filterPosts(val) {
+            const q = val.toLowerCase().trim();
+            let visibleCount = 0;
+            document.querySelectorAll('#blog-posts article').forEach(article => {
+                const text  = article.querySelector('h3').textContent.toLowerCase();
+                const tags  = (article.getAttribute('data-tags') || '').toLowerCase();
+                const match = !q || text.includes(q) || tags.includes(q);
+                article.style.display = match ? '' : 'none';
+                if (match) visibleCount++;
+            });
+            document.getElementById('no-results').style.display = visibleCount === 0 ? 'block' : 'none';
+        }
+
+        // Main search bar
+        document.getElementById('blog-search').addEventListener('input', function() {
+            filterPosts(this.value);
+            // Sync sidebar
+            document.getElementById('sidebarSearch').value = this.value;
+        });
+
+        // Sidebar search (synced)
+        document.getElementById('sidebarSearch').addEventListener('input', function() {
+            filterPosts(this.value);
+            document.getElementById('blog-search').value = this.value;
+        });
+    </script>
+
+</body>
+</html>

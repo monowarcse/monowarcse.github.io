@@ -1,0 +1,679 @@
+<!DOCTYPE HTML>
+<html>
+<head>
+    <title>Monowar - ML Engineer & CSE Student</title>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no" />
+    <link rel="stylesheet" href="assets/css/main.css" />
+    <link href="https://fonts.googleapis.com/css2?family=Space+Mono:wght@400;700&family=Syne:wght@400;600;800&display=swap" rel="stylesheet">
+    <style>
+        /* ===== ANIMATION & ENHANCEMENT LAYER ===== */
+        :root {
+            --accent: #e74c3c;
+            --accent2: #f39c12;
+            --glow: rgba(231, 76, 60, 0.15);
+        }
+
+        /* Smooth scroll */
+        html { scroll-behavior: smooth; }
+
+        /* ── Page Load Fade In ── */
+        #wrapper { animation: fadeInPage 0.8s ease forwards; }
+        @keyframes fadeInPage {
+            from { opacity: 0; transform: translateY(12px); }
+            to   { opacity: 1; transform: translateY(0); }
+        }
+
+        /* ── Header logo pulse ── */
+        #header .logo strong {
+            position: relative;
+            display: inline-block;
+            transition: color 0.3s;
+        }
+        #header .logo:hover strong { color: var(--accent); }
+
+        /* ── Social icons bounce on hover ── */
+        #header .icons li a {
+            transition: transform 0.25s cubic-bezier(.34,1.56,.64,1), color 0.25s;
+        }
+        #header .icons li a:hover {
+            transform: translateY(-5px) scale(1.2);
+            color: var(--accent) !important;
+        }
+
+        /* ── Banner section stagger reveal ── */
+        #banner > div > div:first-child > * {
+            opacity: 0;
+            animation: slideUp 0.7s ease forwards;
+        }
+        #banner > div > div:first-child > *:nth-child(1) { animation-delay: 0.2s; }
+        #banner > div > div:first-child > *:nth-child(2) { animation-delay: 0.4s; }
+        #banner > div > div:first-child > *:nth-child(3) { animation-delay: 0.6s; }
+        @keyframes slideUp {
+            from { opacity: 0; transform: translateY(24px); }
+            to   { opacity: 1; transform: translateY(0); }
+        }
+
+        /* ── Profile image float + glow ── */
+        .image.object img {
+            animation: floatImg 4s ease-in-out infinite;
+            box-shadow: 0 0 0 0 var(--glow);
+            border-radius: 12px;
+            transition: box-shadow 0.4s;
+        }
+        .image.object:hover img {
+            box-shadow: 0 0 40px 8px var(--glow), 0 8px 32px rgba(0,0,0,0.2);
+        }
+        @keyframes floatImg {
+            0%, 100% { transform: translateY(0px); }
+            50%       { transform: translateY(-10px); }
+        }
+
+        /* ── Keyword cards animate in ── */
+        .features article {
+            opacity: 0;
+            transform: scale(0.92);
+            animation: cardPop 0.5s ease forwards;
+            transition: box-shadow 0.3s, transform 0.3s;
+            border-left: 3px solid transparent;
+        }
+        .features article:hover {
+            transform: translateY(-4px) scale(1.02);
+            border-left: 3px solid var(--accent);
+            box-shadow: -4px 4px 20px var(--glow);
+        }
+        .features article:nth-child(1) { animation-delay: 0.1s; }
+        .features article:nth-child(2) { animation-delay: 0.2s; }
+        .features article:nth-child(3) { animation-delay: 0.3s; }
+        .features article:nth-child(4) { animation-delay: 0.4s; }
+        .features article:nth-child(5) { animation-delay: 0.5s; }
+        .features article:nth-child(6) { animation-delay: 0.6s; }
+        @keyframes cardPop {
+            to { opacity: 1; transform: scale(1); }
+        }
+
+        /* ── Keyword h3 gradient text ── */
+        .features article h3 {
+            background: linear-gradient(90deg, var(--accent), var(--accent2));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            font-family: 'Syne', sans-serif;
+            font-weight: 800;
+            letter-spacing: 1px;
+        }
+
+        /* ── Section heading underline animate ── */
+        .major h2 {
+            position: relative;
+            display: inline-block;
+        }
+        .major h2::after {
+            content: '';
+            position: absolute;
+            left: 0; bottom: -4px;
+            width: 0; height: 2px;
+            background: var(--accent);
+            transition: width 0.5s ease;
+        }
+        section:hover .major h2::after { width: 100%; }
+
+        /* ── Certificate cards lift ── */
+        .posts article {
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            border-radius: 8px;
+            overflow: hidden;
+        }
+        .posts article:hover {
+            transform: translateY(-6px);
+            box-shadow: 0 12px 32px rgba(231,76,60,0.15);
+        }
+        .posts article .image img {
+            transition: transform 0.4s ease;
+        }
+        .posts article:hover .image img {
+            transform: scale(1.05);
+        }
+
+        /* ── Buttons pulse glow ── */
+        .button.primary, input[type="submit"].primary {
+            position: relative;
+            overflow: hidden;
+            transition: transform 0.2s, box-shadow 0.3s;
+        }
+        .button.primary:hover, input[type="submit"].primary:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(231,76,60,0.4);
+        }
+        .button.primary::after {
+            content: '';
+            position: absolute;
+            top: 50%; left: 50%;
+            width: 0; height: 0;
+            background: rgba(255,255,255,0.2);
+            border-radius: 50%;
+            transform: translate(-50%,-50%);
+            transition: width 0.4s, height 0.4s, opacity 0.4s;
+            opacity: 0;
+        }
+        .button.primary:active::after {
+            width: 200px; height: 200px; opacity: 1;
+        }
+
+        /* ── Form fields focus glow ── */
+        input[type="text"], input[type="email"], textarea {
+            transition: border-color 0.3s, box-shadow 0.3s;
+        }
+        input[type="text"]:focus, input[type="email"]:focus, textarea:focus {
+            border-color: var(--accent) !important;
+            box-shadow: 0 0 0 3px rgba(231,76,60,0.15) !important;
+            outline: none;
+        }
+
+        /* ── Sidebar mini-posts hover ── */
+        .mini-posts article a.image img {
+            transition: transform 0.3s ease;
+        }
+        .mini-posts article:hover a.image img {
+            transform: scale(1.04);
+        }
+
+        /* ── Typing cursor effect on h1 ── */
+        #banner h1 {
+            font-family: 'Syne', sans-serif;
+            font-weight: 800;
+        }
+
+        /* ── Scroll progress bar ── */
+        #scroll-progress {
+            position: fixed;
+            top: 0; left: 0;
+            height: 3px;
+            width: 0%;
+            background: linear-gradient(90deg, var(--accent), var(--accent2));
+            z-index: 99999;
+            transition: width 0.1s linear;
+        }
+
+        /* ── Nav menu link hover ── */
+        #menu nav ul li a {
+            position: relative;
+            transition: color 0.3s, padding-left 0.3s;
+        }
+        #menu nav ul li a:hover {
+            padding-left: 8px;
+            color: var(--accent) !important;
+        }
+
+        /* ── WhatsApp float pulse ── */
+        .whatsapp-float {
+            position: fixed;
+            bottom: 25px;
+            right: 25px;
+            width: 60px;
+            height: 60px;
+            background: #25D366;
+            color: white;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 26px;
+            box-shadow: 0 6px 18px rgba(0,0,0,0.3);
+            z-index: 9999;
+            text-decoration: none;
+            animation: waPulse 2.5s ease-in-out infinite;
+        }
+        @keyframes waPulse {
+            0%, 100% { box-shadow: 0 6px 18px rgba(37,211,102,0.4), 0 0 0 0 rgba(37,211,102,0.3); }
+            50%       { box-shadow: 0 6px 24px rgba(37,211,102,0.6), 0 0 0 12px rgba(37,211,102,0); }
+        }
+        .tooltip {
+            position: absolute;
+            right: 70px;
+            background: #333;
+            color: white;
+            padding: 6px 10px;
+            border-radius: 5px;
+            font-size: 13px;
+            opacity: 0;
+            transition: 0.3s;
+            white-space: nowrap;
+        }
+        .whatsapp-float:hover .tooltip { opacity: 1; }
+
+        /* ── Fixed: YouTube embed container responsive ── */
+        .video-wrapper {
+            position: relative;
+            padding-bottom: 56.25%; /* 16:9 */
+            height: 0;
+            overflow: hidden;
+            border-radius: 12px;
+            max-width: 700px;
+            margin: 0 auto;
+            box-shadow: 0 8px 32px rgba(0,0,0,0.2);
+        }
+        .video-wrapper iframe {
+            position: absolute;
+            top: 0; left: 0;
+            width: 100%;
+            height: 100%;
+            border: none;
+        }
+
+        /* ── Particle bg on banner ── */
+        #banner { position: relative; overflow: hidden; }
+        .particle {
+            position: absolute;
+            border-radius: 50%;
+            background: var(--accent);
+            opacity: 0.06;
+            animation: drift linear infinite;
+            pointer-events: none;
+        }
+        @keyframes drift {
+            0%   { transform: translateY(100vh) rotate(0deg); opacity: 0; }
+            10%  { opacity: 0.06; }
+            90%  { opacity: 0.06; }
+            100% { transform: translateY(-200px) rotate(360deg); opacity: 0; }
+        }
+body {
+    font-family: "Times New Roman", Times, serif !important;
+    color: #000 !important;
+}
+h1, h2, h3, h4, h5, h6,
+p, li {
+    font-family: "Times New Roman", Times, serif;
+}
+
+
+/* Remove gradient effect from keyword titles */
+.features article h3 {
+    background: none !important;
+    -webkit-text-fill-color: #000 !important;
+    color: #000 !important;
+}
+/* FIX: Skill bar — uses JS width transition, no broken CSS animation */
+        .skill-bar-wrap {
+            width: 100%; background: #e0e0e0;
+            border-radius: 10px; height: 10px;
+            overflow: hidden; margin-bottom: 20px;
+        }
+        .skill-bar-fill {
+            height: 10px; width: 0%;
+            background: linear-gradient(90deg, #e74c3c, #c0392b);
+            border-radius: 10px;
+            transition: width 1.3s ease-out;
+        }
+        .skill-label {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 5px;
+            font-family: "Times New Roman", Times, serif;
+        }
+
+        #banner h1 {
+            font-family: 'Syne', sans-serif;
+            font-weight: 800;
+        }
+    </style>
+</head>
+<body class="is-preload">
+
+    <!-- Scroll Progress Bar -->
+    <div id="scroll-progress"></div>
+
+    <div id="wrapper">
+        <div id="main">
+            <div class="inner">
+
+                <!-- Header -->
+                <header id="header">
+                    <a href="index.html" class="logo"><strong>Monowar's</strong> Portfolio</a>
+                    <ul class="icons">
+                        <li><a href="mailto:monowar.1002@fec.edu.bd" class="icon solid fa-envelope"><span class="label">Email</span></a></li>
+                        <li><a href="https://www.linkedin.com/in/monowarcse/" class="icon brands fa-linkedin"><span class="label">LinkedIn</span></a></li>
+                        <li><a href="https://github.com/dewshishir" class="icon brands fa-github"><span class="label">GitHub</span></a></li>
+                        <li><a href="https://www.kaggle.com/monowarislamshishir" class="icon brands fa-kaggle"><span class="label">Kaggle</span></a></li>
+                        <li><a href="https://medium.com/@monowarcse" class="icon brands fa-medium-m"><span class="label">Medium</span></a></li>
+                        <li><a href="https://x.com/haiShishir" class="icon brands fa-twitter"><span class="label">Twitter</span></a></li>
+                        <li><a href="https://www.facebook.com/monowarcse" class="icon brands fa-facebook-f"><span class="label">Facebook</span></a></li>
+                        <li><a href="https://www.instagram.com/haishishir" class="icon brands fa-instagram"><span class="label">Instagram</span></a></li>
+                    </ul>
+                </header>
+
+                <!-- Banner -->
+                <section id="banner">
+                    <!-- Particles -->
+                    <div id="particles-container"></div>
+
+                    <div style="display: flex; flex-wrap: wrap; align-items: center; gap: 40px;">
+                        <div style="flex: 1; min-width: 300px;">
+                            <header >
+                                <h1 >Hi, I'm Monowar<br />ML Engineer & CSE Student</h1>
+                                <p>Building intelligent systems with code, data, and curiosity.</p>
+                            </header>
+                            <p>Final-year Computer Science student passionate about machine learning, deep learning, and building real-world AI solutions.</p>
+                            <ul class="actions">
+                                <li><a href="myresume.html" class="button big primary">View Resume</a></li>
+                                <li><a href="projects.html" class="button big">View Projects</a></li>
+                            </ul>
+                        </div>
+                        <div style="flex: 0 0 auto;">
+                            <span class="image object">
+                                <img src="images/picmy.jpg" alt="Monowar's Profile"
+                                     style="max-width: 320px; width: 100%; height: auto; border-radius: 12px;" />
+                            </span>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- Keywords Section -->
+                <section>
+                    <header class="major">
+                        <h2 style="border-bottom: 2px solid #e74c3c; padding-bottom: 6px;">
+                            Few keywords which define me are:—
+                        </h2>
+                    </header>
+                    <div class="features" >
+                        <article><div class="content"><ul><li><h3 style=" font-family: Times New Roman;">Passionate</h3></li></ul></div></article>
+                        <article><div class="content"><ul><li><h3 style=" font-family: Times New Roman;">Meticulous</h3></li></ul></div></article>
+                        <article><div class="content"><ul><li><h3 style=" font-family: Times New Roman;">Logical</h3></li></ul></div></article>
+                        <article><div class="content"><ul><li><h3 style=" font-family: Times New Roman;">Diplomatic</h3></li></ul></div></article>
+                        <article><div class="content"><ul><li><h3 style=" font-family: Times New Roman;">Thoughtful</h3></li></ul></div></article>
+                        <article><div class="content"><ul><li><h3 style=" font-family: Times New Roman;">Visionary</h3></li></ul></div></article>
+                    </div>
+                </section>
+
+ 
+                <!-- Certificates Section -->
+                <section>
+                    <header class="major">
+                        <h2>Certificates & Achievements</h2>
+                    </header>
+                    <div class="posts">
+
+                        <article>
+                            <a href="https://www.coursera.org/account/accomplishments/verify/7BLE3KF4RXZO" class="image">
+                                <img src="images/Coursera 7BLE3KF4RXZO.png" alt="Machine Learning Certificate" />
+                            </a>
+                            <h3>Machine Learning Certificate</h3>
+                            <p>Certified in Supervised Machine Learning: Regression and Classification, covering model training, evaluation metrics, and practical implementation using Python.</p>
+                            <ul class="actions">
+                                <li><a href="https://www.coursera.org/account/accomplishments/verify/7BLE3KF4RXZO" class="button">View Certificate</a></li>
+                            </ul>
+                        </article>
+
+                        <article>
+                            <a href="https://www.credly.com/badges/2d207bb9-0daf-4ead-a9e6-166ff694bf96.pdf" class="image">
+                                <img src="images/cisco data science.png" alt="Introduction to Data Science Certificate" />
+                            </a>
+                            <h3>Introduction to Data Science</h3>
+                            <p>Certified by Cisco Networking Academy in foundational data science concepts, including data analysis, data lifecycle, and practical applications.</p>
+                            <ul class="actions">
+                                <li><a href="https://www.credly.com/badges/2d207bb9-0daf-4ead-a9e6-166ff694bf96.pdf" class="button">View Certificate</a></li>
+                            </ul>
+                        </article>
+
+                        <article>
+                            <a href="https://www.udemy.com/certificate/UC-8c6acdda-17b8-4963-af20-0f8c875663ab/" class="image">
+                                <img src="images/udemy Python for Deep Learning.png" alt="Python for Deep Learning Certificate" />
+                            </a>
+                            <h3>Python for Deep Learning</h3>
+                            <p>Completed training on building neural networks in Python, covering deep learning fundamentals and practical implementation.</p>
+                            <ul class="actions">
+                                <li><a href="https://www.udemy.com/certificate/UC-8c6acdda-17b8-4963-af20-0f8c875663ab/" class="button">View Certificate</a></li>
+                            </ul>
+                        </article>
+
+                        <article>
+                            <a href="https://www.udemy.com/certificate/UC-1179c899-05e9-4eb6-9f15-d4342a6d5837/" class="image">
+                                <img src="images/Udemy Python For Data Science.png" alt="Python for Data Science Certificate" />
+                            </a>
+                            <h3>Python for Data Science</h3>
+                            <p>Gained hands-on experience in data analysis, visualization, and scientific computing using Python libraries.</p>
+                            <ul class="actions">
+                                <li><a href="https://www.udemy.com/certificate/UC-1179c899-05e9-4eb6-9f15-d4342a6d5837/" class="button">View Certificate</a></li>
+                            </ul>
+                        </article>
+
+                        <article>
+                            <a href="https://www.udemy.com/certificate/UC-54fe807e-b164-439b-b23c-43f3225e3d57/" class="image">
+                                <img src="images/udemy python course.png" alt="Python Course for App Developers Certificate" />
+                            </a>
+                            <h3>Python Course for App Developers</h3>
+                            <p>Learned to build real-world applications using Python, focusing on core programming concepts and project-based development.</p>
+                            <ul class="actions">
+                                <li><a href="https://www.udemy.com/certificate/UC-54fe807e-b164-439b-b164-439b-b164-439b-b164-439b-b23c-43f3225e3d57/" class="button">View Certificate</a></li>
+                            </ul>
+                        </article>
+
+                        <article>
+                            <a href="https://www.udemy.com/certificate/UC-37cccca7-4e1b-4c5c-8e90-a699dcc78438/" class="image">
+                                <img src="images/udemy django.png" alt="Django Web Development Certificate" />
+                            </a>
+                            <h3>Django Masterclass</h3>
+                            <p>Completed comprehensive training in Django web development, including models, views, templates, and backend architecture.</p>
+                            <ul class="actions">
+                                <li><a href="https://www.udemy.com/certificate/UC-37cccca7-4e1b-4c5c-8e90-a699dcc78438/" class="button">View Certificate</a></li>
+                            </ul>
+                        </article>
+
+                    </div>
+
+                    <hr class="major" />
+                    <!-- Technical Skills — FIX: Own section + scroll-triggered JS animation -->
+                <section>
+                    <header class="major">
+                        <h2>Technical Skills</h2>
+                    </header>
+                    <div id="skills-section">
+                        <div class="skill-label"><span>Python</span><span>90%</span></div>
+                        <div class="skill-bar-wrap"><div class="skill-bar-fill" data-width="90"></div></div>
+
+                        <div class="skill-label"><span>Machine Learning</span><span>85%</span></div>
+                        <div class="skill-bar-wrap"><div class="skill-bar-fill" data-width="85"></div></div>
+
+                        <div class="skill-label"><span>Deep Learning</span><span>75%</span></div>
+                        <div class="skill-bar-wrap"><div class="skill-bar-fill" data-width="75"></div></div>
+
+                        <div class="skill-label"><span>Data Analysis</span><span>80%</span></div>
+                        <div class="skill-bar-wrap"><div class="skill-bar-fill" data-width="80"></div></div>
+
+                        <div class="skill-label"><span>Django</span><span>70%</span></div>
+                        <div class="skill-bar-wrap"><div class="skill-bar-fill" data-width="70"></div></div>
+                    </div>
+                </section>
+                <hr class="major" />
+                    <!-- Contact Form — FIXED redirect URL -->
+                    <header class="major">
+                        <h2>Contact Me</h2>
+                    </header>
+                    <form method="POST" action="https://formspree.io/f/mpqjjevd">
+                        <input type="hidden" name="_subject" value="New Message from Monowar Portfolio" />
+                        <!-- FIXED: replace placeholder redirect with real URL -->
+                        <input type="hidden" name="_redirect" value="https://dewshishir.github.io/thankyou.html" />
+                        <input type="text" name="_gotcha" style="display:none" />
+
+                        <div class="row gtr-uniform">
+                            <div class="col-6 col-12-xsmall">
+                                <input type="text" name="name" placeholder="Name" required />
+                            </div>
+                            <div class="col-6 col-12-xsmall">
+                                <input type="email" name="email" placeholder="Email" required />
+                            </div>
+                            <div class="col-12">
+                                <input type="text" name="subject" placeholder="Subject" required />
+                            </div>
+                            <div class="col-12">
+                                <textarea name="message" placeholder="Message" rows="6" required></textarea>
+                            </div>
+                            <div class="col-12">
+                                <ul class="actions">
+                                    <li><input type="submit" value="Send Message" class="primary" /></li>
+                                    <li><input type="reset" value="Reset" /></li>
+                                </ul>
+                            </div>
+                        </div>
+                    </form>
+
+                </section>
+
+            </div>
+        </div>
+
+        <!-- Sidebar -->
+        <div id="sidebar">
+            <div class="inner">
+
+                <section id="search" class="alt">
+                    <form method="post" action="#">
+                        <input type="text" name="query" id="query" placeholder="Search Portfolio" />
+                    </form>
+                </section>
+
+                <nav id="menu">
+                    <header class="major"><h2>Menu</h2></header>
+                    <ul>
+                        <li><a href="index.html">Home</a></li>
+                        <li><a href="myresume.html">My Resume</a></li>
+                        <li><a href="projects.html">Projects</a></li>
+                        <li><a href="blog.html">Blog</a></li>
+                        <li><a href="contact.html">Contact</a></li>
+                    </ul>
+                </nav>
+
+                <section>
+                    <header class="major"><h2>Recent Activity</h2></header>
+                    <div class="mini-posts">
+                        <article>
+                            <a href="https://github.com/dewshishir" class="image"><img src="images/yolo.png" alt="GitHub Activity" /></a>
+                            <p>Recently updated ML projects and contributed to open-source repositories.</p>
+                        </article>
+                        <article>
+                            <a href="https://www.kaggle.com/monowarislamshishir" class="image"><img src="images/kaggle.png" alt="Kaggle Activity" /></a>
+                            <p>Participating in Kaggle competitions and working on data science notebooks.</p>
+                        </article>
+                        <article>
+                            <a href="https://medium.com/@monowarcse" class="image"><img src="images/cnn.jpg" alt="Blog Activity" /></a>
+                            <p>Writing technical articles on machine learning and AI concepts.</p>
+                        </article>
+                    </div>
+                    <ul class="actions">
+                        <li><a href="projects.html" class="button">View All Projects</a></li>
+                    </ul>
+                </section>
+
+                <section>
+                    <header class="major"><h2>Contact Information</h2></header>
+                    <p>Feel free to reach out for collaborations, opportunities, or just to discuss AI and technology!</p>
+                    <ul class="contact">
+                        <li class="icon solid fa-envelope"><a href="mailto:monowar.1002@fec.edu.bd">monowar.1002@fec.edu.bd</a></li>
+                        <li class="icon brands fa-linkedin"><a href="https://www.linkedin.com/in/monowarcse/">LinkedIn</a></li>
+                        <li class="icon brands fa-github"><a href="https://github.com/dewshishir">GitHub</a></li>
+                        <li class="icon brands fa-kaggle"><a href="https://www.kaggle.com/monowarislamshishir">Kaggle</a></li>
+                        <li class="icon solid fa-home">Dhaka, Bangladesh</li>
+                    </ul>
+                </section>
+
+                <footer id="footer">
+                    <p class="copyright">&copy; Monowar 2025. Design: <a href="https://html5up.net">HTML5 UP</a>.</p>
+                </footer>
+
+            </div>
+        </div>
+
+    </div>
+
+    <!-- WhatsApp Button -->
+    <a href="https://wa.me/8801679787608?text=Hello%20I%20want%20to%20know%20more"
+       class="whatsapp-float" target="_blank">
+        <span class="tooltip">Live Chat</span>
+        <i class="fab fa-whatsapp"></i>
+    </a>
+
+    <!-- Scripts -->
+    <script src="assets/js/jquery.min.js"></script>
+    <script src="assets/js/browser.min.js"></script>
+    <script src="assets/js/breakpoints.min.js"></script>
+    <script src="assets/js/util.js"></script>
+    <script src="assets/js/main.js"></script>
+
+    <script>
+        // ── Scroll Progress Bar ──
+        window.addEventListener('scroll', () => {
+            const el = document.getElementById('scroll-progress');
+            const scrollTop = window.scrollY;
+            const docH = document.documentElement.scrollHeight - window.innerHeight;
+            el.style.width = (scrollTop / docH * 100) + '%';
+        });
+
+        // ── Floating Particles on Banner ──
+        const container = document.getElementById('particles-container');
+        if (container) {
+            for (let i = 0; i < 12; i++) {
+                const p = document.createElement('div');
+                p.className = 'particle';
+                const size = Math.random() * 60 + 20;
+                p.style.cssText = `
+                    width: ${size}px; height: ${size}px;
+                    left: ${Math.random() * 100}%;
+                    animation-duration: ${Math.random() * 12 + 10}s;
+                    animation-delay: ${Math.random() * 8}s;
+                `;
+                container.appendChild(p);
+            }
+        }
+
+        // ── YouTube Embed Fallback Detection ──
+        // If embed fails (error 153), show thumbnail fallback
+        const iframe = document.querySelector('.video-wrapper iframe');
+        const fallback = document.getElementById('yt-fallback');
+        if (iframe && fallback) {
+            iframe.addEventListener('error', () => {
+                document.querySelector('.video-wrapper').style.display = 'none';
+                fallback.style.display = 'block';
+            });
+            // Also listen for postMessage from YouTube about blocked embed
+            window.addEventListener('message', (e) => {
+                if (e.origin.includes('youtube') && e.data && e.data.info === 153) {
+                    document.querySelector('.video-wrapper').style.display = 'none';
+                    fallback.style.display = 'block';
+                }
+            });
+        }
+
+        // ── Intersection Observer for scroll-triggered animations ──
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.style.opacity = '1';
+                    entry.target.style.transform = 'translateY(0)';
+                }
+            });
+        }, { threshold: 0.1 });
+
+        document.querySelectorAll('.posts article').forEach((el, i) => {
+            el.style.opacity = '0';
+            el.style.transform = 'translateY(30px)';
+            el.style.transition = `opacity 0.5s ease ${i * 0.1}s, transform 0.5s ease ${i * 0.1}s`;
+            observer.observe(el);
+        });
+        // FIX: Skills bar scroll-triggered animation using JS transition
+        const skillObs = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.querySelectorAll('.skill-bar-fill').forEach(bar => {
+                        bar.style.width = bar.getAttribute('data-width') + '%';
+                    });
+                    skillObs.unobserve(entry.target);
+                }
+            });
+        }, { threshold: 0.3 });
+
+        const skillsSec = document.getElementById('skills-section');
+        if (skillsSec) skillObs.observe(skillsSec);
+    </script>
+
+</body>
+</html>

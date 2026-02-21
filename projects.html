@@ -1,0 +1,573 @@
+<!-- projects.html -->
+<!DOCTYPE HTML>
+<html>
+<head>
+    <title>Projects - Monowar Portfolio</title>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no" />
+    <link rel="stylesheet" href="assets/css/main.css" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" />
+    <style>
+        :root {
+            --accent: #e74c3c;
+            --accent2: #f39c12;
+            --glow: rgba(231,76,60,0.15);
+        }
+
+        html { scroll-behavior: smooth; }
+
+        /* Page fade in */
+        #wrapper { animation: fadeInPage 0.8s ease forwards; }
+        @keyframes fadeInPage {
+            from { opacity:0; transform:translateY(12px); }
+            to   { opacity:1; transform:translateY(0); }
+        }
+
+        /* Scroll progress bar */
+        #scroll-progress {
+            position: fixed; top:0; left:0;
+            height: 3px; width: 0%;
+            background: linear-gradient(90deg, var(--accent), var(--accent2));
+            z-index: 99999;
+            transition: width 0.1s linear;
+        }
+
+        /* Header */
+        #header .logo strong { transition: color 0.3s; }
+        #header .logo:hover strong { color: var(--accent); }
+        #header .icons li a {
+            transition: transform 0.25s cubic-bezier(.34,1.56,.64,1), color 0.25s;
+        }
+        #header .icons li a:hover {
+            transform: translateY(-5px) scale(1.2);
+            color: var(--accent) !important;
+        }
+
+        /* Section heading underline */
+        .major h2 {
+            position: relative;
+            display: inline-block;
+        }
+        .major h2::after {
+            content: '';
+            position: absolute;
+            left: 0; bottom: -4px;
+            width: 0; height: 2px;
+            background: var(--accent);
+            transition: width 0.5s ease;
+        }
+        section:hover .major h2::after { width: 100%; }
+
+        /* Project cards */
+        .posts article {
+            border-radius: 10px;
+            overflow: hidden;
+            opacity: 0;
+            transform: translateY(30px);
+            transition: opacity 0.5s ease, transform 0.5s ease,
+                        box-shadow 0.3s ease;
+            position: relative;
+        }
+        .posts article.visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+        .posts article:hover {
+            transform: translateY(-7px);
+            box-shadow: 0 14px 36px var(--glow);
+        }
+
+        /* FIX: project images — consistent size, not broken inline styles */
+        .posts article .image {
+            overflow: hidden;
+            display: block;
+        }
+        .posts article .image img {
+            width: 100%;
+            height: 200px;
+            object-fit: cover;
+            display: block;
+            transition: transform 0.4s ease;
+        }
+        .posts article:hover .image img {
+            transform: scale(1.06);
+        }
+
+        /* Featured project highlight */
+        #featured-project .posts article {
+            border-top: 3px solid var(--accent);
+        }
+        #featured-project .posts article .image img {
+            height: 260px;
+        }
+
+        /* Tech tags */
+        .tech-tags {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 6px;
+            margin: 8px 0 12px;
+        }
+        .tech-tag {
+            background: rgba(231,76,60,0.08);
+            color: var(--accent);
+            border: 1px solid rgba(231,76,60,0.25);
+            padding: 2px 10px;
+            border-radius: 20px;
+            font-size: 0.74em;
+            font-weight: 600;
+        }
+
+        /* Project filter bar */
+        .filter-bar {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+            margin: 0 0 30px;
+        }
+        .filter-btn {
+            padding: 6px 18px;
+            border: 1.5px solid #ddd;
+            border-radius: 20px;
+            background: white;
+            cursor: pointer;
+            font-size: 0.85em;
+            font-weight: 600;
+            transition: all 0.25s ease;
+            color: #555;
+        }
+        .filter-btn:hover, .filter-btn.active {
+            background: var(--accent);
+            border-color: var(--accent);
+            color: white;
+        }
+
+        /* Buttons */
+        .button.primary {
+            transition: transform 0.2s, box-shadow 0.3s;
+        }
+        .button.primary:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(231,76,60,0.4);
+        }
+        .button:not(.primary):hover {
+            border-color: var(--accent);
+            color: var(--accent);
+        }
+
+        /* Form */
+        input[type="text"]:focus, input[type="email"]:focus, textarea:focus {
+            border-color: var(--accent) !important;
+            box-shadow: 0 0 0 3px rgba(231,76,60,0.12) !important;
+            outline: none;
+        }
+        input[type="submit"].primary {
+            transition: transform 0.2s, box-shadow 0.3s;
+        }
+        input[type="submit"].primary:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(231,76,60,0.4);
+        }
+
+        /* Nav hover */
+        #menu nav ul li a { transition: color 0.3s, padding-left 0.3s; }
+        #menu nav ul li a:hover {
+            padding-left: 8px;
+            color: var(--accent) !important;
+        }
+
+        /* Technologies list */
+        #sidebar .inner ul li {
+            transition: padding-left 0.2s, color 0.2s;
+            cursor: default;
+        }
+        #sidebar .inner ul li:hover {
+            padding-left: 6px;
+            color: var(--accent);
+        }
+
+        /* WhatsApp */
+        .whatsapp-float {
+            position: fixed;
+            bottom: 25px; right: 25px;
+            width: 60px; height: 60px;
+            background: #25D366; color: white;
+            border-radius: 50%;
+            display: flex; align-items: center; justify-content: center;
+            font-size: 26px; z-index: 9999;
+            text-decoration: none;
+            animation: waPulse 2.5s ease-in-out infinite;
+        }
+        @keyframes waPulse {
+            0%,100% { box-shadow: 0 6px 18px rgba(37,211,102,0.4), 0 0 0 0 rgba(37,211,102,0.3); }
+            50%      { box-shadow: 0 6px 24px rgba(37,211,102,0.6), 0 0 0 12px rgba(37,211,102,0); }
+        }
+        .wa-tooltip {
+            position: absolute; right: 70px;
+            background: #333; color: white;
+            padding: 6px 12px; border-radius: 5px;
+            font-size: 13px; opacity: 0;
+            transition: 0.3s; white-space: nowrap;
+        }
+        .whatsapp-float:hover .wa-tooltip { opacity: 1; }
+
+        /* Custom scrollbar */
+        ::-webkit-scrollbar { width: 8px; }
+        ::-webkit-scrollbar-track { background: #f1f1f1; }
+        ::-webkit-scrollbar-thumb {
+            background: linear-gradient(45deg, var(--accent), var(--accent2));
+            border-radius: 5px;
+        }
+
+        /* No results */
+        #no-results {
+            display: none;
+            text-align: center;
+            padding: 40px;
+            color: #999;
+            font-size: 1.1em;
+            grid-column: 1 / -1;
+        }
+
+        @media (max-width: 736px) {
+            .posts article .image img { height: 160px; }
+            #featured-project .posts article .image img { height: 180px; }
+        }
+    </style>
+</head>
+<body class="is-preload">
+
+    <div id="scroll-progress"></div>
+
+    <div id="wrapper">
+        <div id="main">
+            <div class="inner">
+
+                <!-- Header -->
+                <header id="header">
+                    <a href="index.html" class="logo"><strong>Monowar</strong> Portfolio</a>
+                    <ul class="icons">
+                        <li><a href="mailto:monowar.1002@fec.edu.bd" class="icon solid fa-envelope"><span class="label">Email</span></a></li>
+                        <li><a href="https://www.linkedin.com/in/monowarcse/" class="icon brands fa-linkedin"><span class="label">LinkedIn</span></a></li>
+                        <li><a href="https://github.com/dewshishir" class="icon brands fa-github"><span class="label">GitHub</span></a></li>
+                        <li><a href="https://www.kaggle.com/monowarislamshishir" class="icon brands fa-kaggle"><span class="label">Kaggle</span></a></li>
+                        <li><a href="https://medium.com/@monowarcse" class="icon brands fa-medium-m"><span class="label">Medium</span></a></li>
+                        <li><a href="https://x.com/haiShishir" class="icon brands fa-twitter"><span class="label">Twitter</span></a></li>
+                        <li><a href="https://www.facebook.com/monowarcse" class="icon brands fa-facebook-f"><span class="label">Facebook</span></a></li>
+                        <li><a href="https://www.instagram.com/haishishir" class="icon brands fa-instagram"><span class="label">Instagram</span></a></li>
+                    </ul>
+                </header>
+
+                <section style="margin-top:-60px;">
+                    <header class="major" style="text-align:center;">
+                        <h1 style="font-size:2.2em; margin-bottom:10px;">Projects</h1>
+                    </header>
+                    <p style="text-align:center; max-width:800px; margin:0 auto 30px auto;">
+                        Featured and recent projects across Machine Learning, Web Development, and System Design —
+                        each reflecting logical thinking, meticulous coding, and passion for innovation.
+                    </p>
+
+                    <!-- Category filter -->
+                    <div class="filter-bar" id="filter-bar">
+                        <button class="filter-btn active" data-filter="all">All</button>
+                        <button class="filter-btn" data-filter="ml">Machine Learning</button>
+                        <button class="filter-btn" data-filter="dl">Deep Learning</button>
+                        <button class="filter-btn" data-filter="web">Web / Full-Stack</button>
+                        <button class="filter-btn" data-filter="iot">IoT / Arduino</button>
+                    </div>
+
+                    <!-- Featured Project -->
+                    <section id="featured-project">
+                        <header class="major"><h2>Featured Project</h2></header>
+                        <div class="posts">
+                            <article data-category="dl ml">
+                                <a href="https://github.com/dewshishir/Road-Scene-Object-Detection-Based-on-an-Improved-YOLO" class="image" target="_blank">
+                                    <img src="images/yolo.png" alt="Road Scene Object Detection" />
+                                </a>
+                                <h3>Road Scene Object Detection — Improved YOLO</h3>
+                                <div class="tech-tags">
+                                    <span class="tech-tag">YOLOv8</span>
+                                    <span class="tech-tag">Python</span>
+                                    <span class="tech-tag">Computer Vision</span>
+                                    <span class="tech-tag">Deep Learning</span>
+                                    <span class="tech-tag">OpenCV</span>
+                                </div>
+                                <p>A robust multi-class road scene object detection system using an improved YOLO-based architecture, optimized for dense, high-occlusion urban traffic — specifically Dhaka city real-world scenarios.</p>
+                                <ul class="actions">
+                                    <li><a href="https://github.com/dewshishir/Road-Scene-Object-Detection-Based-on-an-Improved-YOLO" class="button" target="_blank">View on GitHub</a></li>
+                                    <li><a href="https://github.com/dewshishir/Road-Scene-Object-Detection-Based-on-an-Improved-YOLO/blob/main/Traffic%20Signal%20In%20Dhaka%20City%20(part-2)%20-%20Transport%20World.mp4" class="button primary" target="_blank">Live Demo</a></li>
+                                </ul>
+                            </article>
+                        </div>
+                    </section>
+
+                    <hr class="major" />
+
+                    <!-- Other Projects -->
+                    <section>
+                        <header class="major"><h2>Other Projects</h2></header>
+                        <div class="posts" id="project-grid">
+
+                            <article data-category="ml">
+                                <a href="https://github.com/dewshishir/Bangladesh-House-Rent-Prediction-Calculator-BDT-" class="image" target="_blank">
+                                    <img src="images/house_rent.png" alt="Bangladesh House Rent Prediction" />
+                                </a>
+                                <h3>Bangladesh House Rent Prediction (BDT)</h3>
+                                <div class="tech-tags">
+                                    <span class="tech-tag">Python</span>
+                                    <span class="tech-tag">Scikit-learn</span>
+                                    <span class="tech-tag">Streamlit</span>
+                                    <span class="tech-tag">Linear Regression</span>
+                                </div>
+                                <p>Streamlit-based ML application using Linear Regression to predict house rent across major Bangladeshi cities, with Scikit-learn pipeline and One-Hot Encoding.</p>
+                                <ul class="actions">
+                                    <li><a href="https://bdhouserent.streamlit.app/" class="button primary" target="_blank">Live Demo</a></li>
+                                    <li><a href="https://github.com/dewshishir/Bangladesh-House-Rent-Prediction-Calculator-BDT-" class="button" target="_blank">View Code</a></li>
+                                </ul>
+                            </article>
+
+                            <article data-category="ml web">
+                                <a href="https://github.com/dewshishir/Dynamic-Mortgage-Schedule-Calculator-with-Visual-Analytics" class="image" target="_blank">
+                                    <img src="images/Dynamic_mortage.png" alt="Dynamic Mortgage Calculator" />
+                                </a>
+                                <h3>Dynamic Mortgage Calculator with Analytics</h3>
+                                <div class="tech-tags">
+                                    <span class="tech-tag">Python</span>
+                                    <span class="tech-tag">Data Visualization</span>
+                                    <span class="tech-tag">Analytics</span>
+                                </div>
+                                <p>Interactive mortgage calculator computing monthly payments, total interest, and amortization schedules with yearly balance trend charts and principal vs interest comparisons.</p>
+                                <ul class="actions">
+                                    <li><a href="https://github.com/dewshishir/Dynamic-Mortgage-Schedule-Calculator-with-Visual-Analytics" class="button" target="_blank">View Code</a></li>
+                                </ul>
+                            </article>
+
+                            <article data-category="dl">
+                                <a href="https://drive.google.com/file/d/1vm0QxD_JG7g9zYe0e4e9y-b855PJT0G6/view" class="image" target="_blank">
+                                    <img src="images/Datathon.png" alt="Slang Meme Classification" />
+                                </a>
+                                <h3>Slang Meme Image Classification</h3>
+                                <div class="tech-tags">
+                                    <span class="tech-tag">CNN</span>
+                                    <span class="tech-tag">Deep Learning</span>
+                                    <span class="tech-tag">NLP</span>
+                                    <span class="tech-tag">TensorFlow</span>
+                                </div>
+                                <p>CNN-based system to classify slang meme images with embedded text. Applied image normalization, feature extraction, and text understanding mechanisms with standard evaluation metrics.</p>
+                                <ul class="actions">
+                                    <li><a href="https://drive.google.com/file/d/1vm0QxD_JG7g9zYe0e4e9y-b855PJT0G6/view" class="button" target="_blank">View Project</a></li>
+                                </ul>
+                            </article>
+
+                            <article data-category="web">
+                                <a href="https://github.com/dewshishir/Hotel-Management-System" class="image" target="_blank">
+                                    <img src="images/hotel_manage.png" alt="Hotel Management System" />
+                                </a>
+                                <h3>Hotel Management System</h3>
+                                <div class="tech-tags">
+                                    <span class="tech-tag">Full-Stack</span>
+                                    <span class="tech-tag">Web App</span>
+                                    <span class="tech-tag">Database</span>
+                                </div>
+                                <p>Full-stack web application for hotel operations including booking, check-in/check-out, billing, and inventory management with dynamic UI and centralized data handling.</p>
+                                <ul class="actions">
+                                    <li><a href="https://github.com/dewshishir/Hotel-Management-System" class="button" target="_blank">View Code</a></li>
+                                </ul>
+                            </article>
+
+                            <article data-category="iot">
+                                <a href="https://github.com/dewshishir/Arduino-project/tree/main/Wireless Notice Board" class="image" target="_blank">
+                                    <img src="images/Gsm_notice.png" alt="GSM Wireless Notice Board" />
+                                </a>
+                                <h3>GSM-Based Wireless Notice Board</h3>
+                                <div class="tech-tags">
+                                    <span class="tech-tag">Arduino</span>
+                                    <span class="tech-tag">GSM</span>
+                                    <span class="tech-tag">Embedded C</span>
+                                    <span class="tech-tag">IoT</span>
+                                </div>
+                                <p>GSM-enabled notice board that receives SMS and displays messages on LCD/LED interface, using serial communication between GSM module and microcontroller.</p>
+                                <ul class="actions">
+                                    <li><a href="https://github.com/dewshishir/Arduino-project/tree/main/Wireless Notice Board" class="button" target="_blank">View Code</a></li>
+                                </ul>
+                            </article>
+
+                            <article data-category="iot">
+                                <a href="https://github.com/dewshishir/Arduino-project/tree/main/smart dustbin" class="image" target="_blank">
+                                    <img src="images/Smart_dusbin.png" alt="Smart Dustbin IoT" />
+                                </a>
+                                <h3>Smart Dustbin — Arduino IoT</h3>
+                                <div class="tech-tags">
+                                    <span class="tech-tag">Arduino</span>
+                                    <span class="tech-tag">Ultrasonic Sensor</span>
+                                    <span class="tech-tag">Servo Motor</span>
+                                    <span class="tech-tag">IoT</span>
+                                </div>
+                                <p>Automated waste management system using ultrasonic sensors and servo motor control with real-time object detection and embedded control logic.</p>
+                                <ul class="actions">
+                                    <li><a href="https://github.com/dewshishir/Arduino-project/tree/main/smart dustbin" class="button" target="_blank">View Code</a></li>
+                                </ul>
+                            </article>
+
+                            <div id="no-results">No projects found for this category.</div>
+
+                        </div>
+                    </section>
+
+                    <hr class="major" />
+
+                    <!-- Contact Form — FIX: placeholder redirect replaced -->
+                    <form method="POST" action="https://formspree.io/f/mpqjjevd">
+                        <input type="hidden" name="_subject" value="New Message from Monowar Portfolio" />
+                        <input type="hidden" name="_redirect" value="https://dewshishir.github.io/thankyou.html" />
+                        <input type="text" name="_gotcha" style="display:none" />
+                        <div class="row gtr-uniform">
+                            <div class="col-6 col-12-xsmall">
+                                <input type="text" name="name" placeholder="Name" required />
+                            </div>
+                            <div class="col-6 col-12-xsmall">
+                                <input type="email" name="email" placeholder="Email" required />
+                            </div>
+                            <div class="col-12">
+                                <input type="text" name="subject" placeholder="Subject" required />
+                            </div>
+                            <div class="col-12">
+                                <textarea name="message" placeholder="Message" rows="6" required></textarea>
+                            </div>
+                            <div class="col-12">
+                                <ul class="actions">
+                                    <li><input type="submit" value="Send Message" class="primary" /></li>
+                                    <li><input type="reset" value="Reset" /></li>
+                                </ul>
+                            </div>
+                        </div>
+                    </form>
+
+                </section>
+            </div>
+        </div>
+
+        <!-- Sidebar -->
+        <div id="sidebar">
+            <div class="inner">
+                <section id="search" class="alt">
+                    <form method="post" action="#">
+                        <input type="text" id="query" name="query" placeholder="Search Projects" />
+                    </form>
+                </section>
+
+                <nav id="menu">
+                    <header class="major"><h2>Menu</h2></header>
+                    <ul>
+                        <li><a href="index.html">Home</a></li>
+                        <li><a href="myresume.html">My Resume</a></li>
+                        <li><a href="projects.html">Projects</a></li>
+                        <li><a href="blog.html">Blog</a></li>
+                        <li><a href="contact.html">Contact</a></li>
+                    </ul>
+                </nav>
+
+                <section>
+                    <header class="major"><h2>Featured Links</h2></header>
+                    <ul class="contact">
+                        <li class="icon solid fa-envelope"><a href="mailto:monowar.1002@fec.edu.bd">monowar.1002@fec.edu.bd</a></li>
+                        <li class="icon brands fa-linkedin"><a href="https://www.linkedin.com/in/monowarcse/">LinkedIn</a></li>
+                        <li class="icon brands fa-github"><a href="https://github.com/dewshishir">GitHub</a></li>
+                        <li class="icon brands fa-kaggle"><a href="https://www.kaggle.com/monowarislamshishir">Kaggle</a></li>
+                        <li class="icon brands fa-medium-m"><a href="https://medium.com/@monowarcse">Medium</a></li>
+                    </ul>
+                </section>
+
+                <section>
+                    <header class="major"><h2>Technologies Used</h2></header>
+                    <ul>
+                        <li>Python & Machine Learning</li>
+                        <li>TensorFlow & PyTorch</li>
+                        <li>Spring Boot & Java</li>
+                        <li>MySQL & Database Design</li>
+                        <li>React & Frontend Development</li>
+                        <li>Data Visualization</li>
+                    </ul>
+                </section>
+
+                <footer id="footer">
+                    <p class="copyright">&copy; Monowar 2025. Design: <a href="https://html5up.net">HTML5 UP</a>.</p>
+                </footer>
+            </div>
+        </div>
+    </div>
+
+    <!-- WhatsApp -->
+    <a href="https://wa.me/8801679787608?text=Hello%20I%20want%20to%20know%20more"
+       class="whatsapp-float" target="_blank">
+        <span class="wa-tooltip">Live Chat</span>
+        <i class="fab fa-whatsapp"></i>
+    </a>
+
+    <script src="assets/js/jquery.min.js"></script>
+    <script src="assets/js/browser.min.js"></script>
+    <script src="assets/js/breakpoints.min.js"></script>
+    <script src="assets/js/util.js"></script>
+    <script src="assets/js/main.js"></script>
+
+    <script>
+        // Scroll progress
+        window.addEventListener('scroll', () => {
+            const pct = window.scrollY / (document.documentElement.scrollHeight - window.innerHeight) * 100;
+            document.getElementById('scroll-progress').style.width = pct + '%';
+        });
+
+        // Project cards scroll-trigger stagger
+        const cardObs = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    const articles = [...document.querySelectorAll('.posts article')];
+                    const idx = articles.indexOf(entry.target);
+                    setTimeout(() => entry.target.classList.add('visible'), idx * 110);
+                    cardObs.unobserve(entry.target);
+                }
+            });
+        }, { threshold: 0.1 });
+        document.querySelectorAll('.posts article').forEach(el => cardObs.observe(el));
+
+        // Category filter
+        document.querySelectorAll('.filter-btn').forEach(btn => {
+            btn.addEventListener('click', function() {
+                document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
+                this.classList.add('active');
+
+                const filter = this.getAttribute('data-filter');
+                const articles = document.querySelectorAll('#project-grid article');
+                let visible = 0;
+
+                articles.forEach(article => {
+                    const cats = article.getAttribute('data-category') || '';
+                    const show = filter === 'all' || cats.includes(filter);
+                    article.style.display = show ? '' : 'none';
+                    if (show) visible++;
+                });
+
+                document.getElementById('no-results').style.display = visible === 0 ? 'block' : 'none';
+            });
+        });
+
+        // Sidebar search filters project cards
+        document.getElementById('query').addEventListener('input', function() {
+            const q = this.value.toLowerCase();
+            let visible = 0;
+            document.querySelectorAll('#project-grid article').forEach(article => {
+                const text = article.textContent.toLowerCase();
+                const show = !q || text.includes(q);
+                article.style.display = show ? '' : 'none';
+                if (show) visible++;
+            });
+            document.getElementById('no-results').style.display = visible === 0 ? 'block' : 'none';
+            // Reset filter buttons
+            if (q) {
+                document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
+            }
+        });
+    </script>
+
+</body>
+</html>
