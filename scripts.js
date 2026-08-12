@@ -66,7 +66,7 @@ function displayFallbackPublications() {
         "M. Islam",
         "A. Hossain",
         "S. Akhter",
-        "M. Islam"
+        "S. Islam"
       ],
       "venue": "Under review, IEEE SPICSCON 2026",
       "thumbnail": "images/thumbs/1.jpg",
