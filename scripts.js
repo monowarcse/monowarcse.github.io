@@ -52,7 +52,7 @@ function displayFallbackPublications() {
         "S. Akter"
       ],
       "venue": "Proceedings of ECCT 2026 (Accepted)",
-      "thumbnail": "images/thumbs/malabar.jpeg",
+      "thumbnail": "images/thumbs/malabar.png",
       "selected": 1,
       "award": "",
       "links": {
