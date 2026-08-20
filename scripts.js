@@ -68,7 +68,7 @@ function displayFallbackPublications() {
         "S. Akhter",
         "S. Islam"
       ],
-      "venue": "Under review, IEEE SPICSCON 2026",
+      "venue": "Accepted, IEEE SPICSCON 2026",
       "thumbnail": "images/thumbs/1.jpg",
       "selected": 1,
       "award": "",
